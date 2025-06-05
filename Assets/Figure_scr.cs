@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class Figure_scr : MonoBehaviour
 {
+    float rand_rot = 0f;
     // Start is called before the first frame update
     void Start()
     {
-        transform.Rotate(0.0f, 50.0f, 0.0f, Space.Self);
+       rand_rot = Random.Range(10f, 270f);
+       transform.Rotate(0.0f, 0.0f, rand_rot, Space.Self);
     }
 
     // Update is called once per frame
