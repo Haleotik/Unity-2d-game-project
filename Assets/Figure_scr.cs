@@ -15,6 +15,12 @@ public class Figure_scr : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //transform.Rotate(35.0f, 0.0f, 0.0f, Space.Self);
+        if (Input.GetMouseButton(0))
+        {
+            Destroy(gameObject);
+        }
     }
+
+
+   
 }

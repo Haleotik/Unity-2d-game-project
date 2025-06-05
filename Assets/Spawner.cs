@@ -30,6 +30,10 @@ public class Spawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyUp("space"))
+        {
+            Destroy(inst_cont);
+        }
 
     }
 
