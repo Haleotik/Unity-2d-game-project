@@ -7,7 +7,7 @@ public class Spawner : MonoBehaviour
     public GameObject spawner_1;
     public float _timer;
     
-    GameObject inst_cont;    
+    //GameObject inst_cont;    
     GameObject copied_obj;
 
     public GameObject[] GOArray;
@@ -30,10 +30,7 @@ public class Spawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyUp("space"))
-        {
-            Destroy(inst_cont);
-        }
+        
 
     }
 
@@ -48,8 +45,10 @@ public class Spawner : MonoBehaviour
         { _chosen = _chosen + 1; }
 
         copied_obj = GOArray[_chosen];
-        inst_cont = Instantiate(copied_obj, spawner_1.transform.position, spawner_1.transform.rotation);
+        GameObject inst_cont = Instantiate(copied_obj, spawner_1.transform.position, spawner_1.transform.rotation);
         inst_cont.transform.SetParent(gameObject.transform, true);
+        Click_scr clk_scr = inst_cont.AddComponent<Click_scr>();
+        clk_scr.cust_gameObject = inst_cont;
         if (_quantity < 6)
         {
             StartCoroutine(cust_coroutine());

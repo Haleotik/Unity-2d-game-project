@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class Figure_scr : MonoBehaviour
 {
+
+    public GameObject _GO_pref;
     float rand_rot = 0f;
+    public GameObject _camera;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,10 +18,13 @@ public class Figure_scr : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+        /*
         if (Input.GetMouseButton(0))
         {
-            Destroy(gameObject);
+            Destroy(this.gameObject);
         }
+        */
     }
 
 
