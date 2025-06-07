@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class Spawner : MonoBehaviour
 {
@@ -45,15 +47,19 @@ public class Spawner : MonoBehaviour
         { _chosen = _chosen + 1; }
 
         copied_obj = GOArray[_chosen];
-        GameObject inst_cont = Instantiate(copied_obj, spawner_1.transform.position, spawner_1.transform.rotation);
+        GameObject inst_cont = Instantiate(copied_obj, spawner_1.transform);
         inst_cont.transform.SetParent(gameObject.transform, true);
-        Click_scr clk_scr = inst_cont.AddComponent<Click_scr>();
-        clk_scr.cust_gameObject = inst_cont;
+        
+        
+        
+        
         if (_quantity < 6)
         {
             StartCoroutine(cust_coroutine());
             _quantity += 1;
         }
+
+
         
     }
 
