@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 304725763388154461}
   m_Layer: 5
   m_Name: Dynamic Sprite 2
-  m_TagString: Untagged
+  m_TagString: chast
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -117,7 +117,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7ce3b5c0058b674cb875e7f78b9dd54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _GO_pref: {fileID: 7298814482256580387}
+  _var1: 0
+  knopka1: {fileID: 4027730568090462732, guid: 9042a6116fb3c5a46b76a3def7e4430b, type: 3}
 --- !u!61 &304725763388154461
 BoxCollider2D:
   m_ObjectHideFlags: 0
