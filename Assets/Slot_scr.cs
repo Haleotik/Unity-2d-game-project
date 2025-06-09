@@ -4,17 +4,8 @@ using UnityEngine;
 
 public class Slot_scr : MonoBehaviour
 {
-    public bool _var;
+    public int _var;
     // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 
 }
