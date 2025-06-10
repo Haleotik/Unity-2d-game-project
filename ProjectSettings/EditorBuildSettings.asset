@@ -8,5 +8,11 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/SampleScene 1.unity
+    guid: 16db27f977a7c1a438a28e51b3f4acc0
+  - enabled: 1
+    path: Assets/Scenes/SampleScene 2.unity
+    guid: dc1227baa9f80b448a699eb365f6ec93
   m_configObjects:
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: 6f16f8bb38a372c48a1c0b6e02c1b7fa, type: 2}

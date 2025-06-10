@@ -5,26 +5,34 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Linq;
 
+
 public class Figure_scr : MonoBehaviour, IPointerClickHandler
 {
     public GameObject[] _slots;
     public bool _var1;
     public int _vid;
     public int _var2;
+    public int _zapolnennost;
+    public List<GameObject> _spisok;
     
     
     float rand_rot = 0f;
 
-    public List<GameObject> na_bare = new List<GameObject>();
+    //List<GameObject> na_bare = new List<GameObject>();
 
     // Start is called before the first frame update
     void Start()
     {
-       _slots = GameObject.FindGameObjectsWithTag("_slot").OrderBy(go => go.name).ToArray();
-       rand_rot = Random.Range(10f, 270f);
-       transform.Rotate(0.0f, 0.0f, rand_rot, Space.Self);
+        _slots = GameObject.FindGameObjectsWithTag("_slot").OrderBy(go => go.name).ToArray();
+        rand_rot = Random.Range(10f, 270f);
+        transform.Rotate(0.0f, 0.0f, rand_rot, Space.Self);
         
-
+        if (_vid == 1)
+        { _spisok = GameObject.Find("Canvas").GetComponent<Spawner>().na_bare_1; }
+        else if (_vid == 2)
+        { _spisok = GameObject.Find("Canvas").GetComponent<Spawner>().na_bare_2; }
+        else if (_vid == 3)
+        { _spisok = GameObject.Find("Canvas").GetComponent<Spawner>().na_bare_3; }
     }
 
     // Update is called once per frame
@@ -39,28 +47,42 @@ public class Figure_scr : MonoBehaviour, IPointerClickHandler
                 transform.rotation = _slots[i].transform.rotation;
                 _var1 = true;
                 GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
-                gameObject.transform.SetParent(_slots[i], true);
                 
-                _slots[i].GetComponent<Slot_scr>()._var = _vid;
-                GameObject.Find("Canvas").GetComponent<Spawner>().na_urovne.Remove(gameObject);
-
+                
+                _slots[i].GetComponent<Slot_scr>()._var = _vid; // slot zanyat 
+                GameObject.Find("Canvas").GetComponent<Spawner>().na_urovne.Remove(gameObject); 
+                _spisok.Add(gameObject); 
+                
                 for (int ib = 0; ib < _slots.Length; ib++)
                 {
-                    if (_slots[ib].GetComponent<Slot_scr>()._var == _vid)
+                    if (_slots[ib].GetComponent<Slot_scr>()._var != 0)
                     {
-                        _var2 += 1;
-                        if (_var2 == 3)
+                        _zapolnennost += 1;
+                    }                    
+                }
+                if (_zapolnennost == 4)
+                { GameObject.Find("Canvas").GetComponent<Spawner>()._FinishScene(); }
+
+                if (_spisok.Count == 3)
+                {
+                    for (int ib = 0; ib < 3; ib++)
+                    {
+                        Destroy(_spisok[ib]);
+                    }
+                    _spisok.Clear();
+                    
+                    for (int ibc = 0; ibc < _slots.Length; ibc++)
+                    {
+                        if ( _slots[ibc].GetComponent<Slot_scr>()._var == _vid)
                         {
-                            Debug.Log("gotovo");
-                            break;
-                        }
+                            _slots[ibc].GetComponent<Slot_scr>()._var = 0;
+                        }  
                     }
                 }
 
-                    break;
+                break;
             }            
-        }
-        
+        }        
     }
 
 

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 
 public class Spawner : MonoBehaviour
@@ -18,8 +19,9 @@ public class Spawner : MonoBehaviour
 
 
     public List<GameObject> na_urovne = new List<GameObject>();
-
-
+    public List<GameObject> na_bare_1 = new List<GameObject>();
+    public List<GameObject> na_bare_2 = new List<GameObject>();
+    public List<GameObject> na_bare_3 = new List<GameObject>();
 
     // Start is called before the first frame update
     void Start()
@@ -77,7 +79,10 @@ public class Spawner : MonoBehaviour
        
     }
 
-
+    public void _FinishScene()
+    {
+        SceneManager.LoadScene(2, LoadSceneMode.Single);
+    }
 
 
 

@@ -1212,9 +1212,13 @@ MonoBehaviour:
   GOArray:
   - {fileID: 6272488777956872041, guid: 51f2e6efb576b214bbaf2466992afd96, type: 3}
   - {fileID: 7298814482256580387, guid: ec107e80cf99d524b97f4109bcaabaa9, type: 3}
+  - {fileID: 7298814482256580387, guid: 7a825fff54dd8ed4d90ec068fe6b073f, type: 3}
   _chosen: 0
   _quantity: 1
   na_urovne: []
+  na_bare_1: []
+  na_bare_2: []
+  na_bare_3: []
 --- !u!224 &1066245203 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 570630469264292946, guid: 9042a6116fb3c5a46b76a3def7e4430b, type: 3}
