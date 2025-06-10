@@ -16,9 +16,10 @@ public class Figure_scr : MonoBehaviour, IPointerClickHandler
     public List<GameObject> _spisok;
     
     
+    
     float rand_rot = 0f;
 
-    //List<GameObject> na_bare = new List<GameObject>();
+    
 
     // Start is called before the first frame update
     void Start()
@@ -27,12 +28,19 @@ public class Figure_scr : MonoBehaviour, IPointerClickHandler
         rand_rot = Random.Range(10f, 270f);
         transform.Rotate(0.0f, 0.0f, rand_rot, Space.Self);
         
+        
+        
+        //mashtabirovanie
         if (_vid == 1)
         { _spisok = GameObject.Find("Canvas").GetComponent<Spawner>().na_bare_1; }
         else if (_vid == 2)
         { _spisok = GameObject.Find("Canvas").GetComponent<Spawner>().na_bare_2; }
         else if (_vid == 3)
         { _spisok = GameObject.Find("Canvas").GetComponent<Spawner>().na_bare_3; }
+        else if (_vid == 4)
+        { _spisok = GameObject.Find("Canvas").GetComponent<Spawner>().na_bare_4  ; }
+
+        
     }
 
     // Update is called once per frame
@@ -53,31 +61,34 @@ public class Figure_scr : MonoBehaviour, IPointerClickHandler
                 GameObject.Find("Canvas").GetComponent<Spawner>().na_urovne.Remove(gameObject); 
                 _spisok.Add(gameObject); 
                 
-                for (int ib = 0; ib < _slots.Length; ib++)
+                
+                for (int ib = 0; ib < _slots.Length; ib++) //proverka zapolnennost
                 {
                     if (_slots[ib].GetComponent<Slot_scr>()._var != 0)
                     {
                         _zapolnennost += 1;
                     }                    
                 }
-                if (_zapolnennost == 4)
+                if (_zapolnennost == 7) // mashtabirovanie
                 { GameObject.Find("Canvas").GetComponent<Spawner>()._FinishScene(); }
 
-                if (_spisok.Count == 3)
+                if (_spisok.Count == 3) // ubiranie obectov 
                 {
-                    for (int ib = 0; ib < 3; ib++)
+                    if (GameObject.Find("Canvas").GetComponent<Spawner>().na_urovne.Count() == 0)
+                    { GameObject.Find("Canvas").GetComponent<Spawner>()._CoolScene(); }
+                    else
                     {
-                        Destroy(_spisok[ib]);
-                    }
-                    _spisok.Clear();
-                    
-                    for (int ibc = 0; ibc < _slots.Length; ibc++)
-                    {
-                        if ( _slots[ibc].GetComponent<Slot_scr>()._var == _vid)
+                        for (int ib = 0; ib < 3; ib++)
+                        { Destroy(_spisok[ib]); }
+                        _spisok.Clear();
+
+                        for (int ibc = 0; ibc < _slots.Length; ibc++) // ochist slotov
                         {
-                            _slots[ibc].GetComponent<Slot_scr>()._var = 0;
-                        }  
+                            if (_slots[ibc].GetComponent<Slot_scr>()._var == _vid)
+                            { _slots[ibc].GetComponent<Slot_scr>()._var = 0; }
+                        }
                     }
+                    
                 }
 
                 break;
