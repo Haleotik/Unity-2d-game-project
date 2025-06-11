@@ -10,7 +10,7 @@ public class Spawner : MonoBehaviour
     public GameObject spawner_1;
     public float _timer;
     
-    GameObject copied_obj;
+    public GameObject copied_obj;
 
     public GameObject[] GOArray;
     public int _chosen;
@@ -21,7 +21,7 @@ public class Spawner : MonoBehaviour
 
     public List<GameObject> na_urovne = new List<GameObject>();
 
-    
+   /* 
     //mashtabirovanie
     public List<GameObject> na_bare_1 = new List<GameObject>();
     public List<GameObject> na_bare_2 = new List<GameObject>();
@@ -35,7 +35,13 @@ public class Spawner : MonoBehaviour
     public List<GameObject> na_bare_10 = new List<GameObject>();
     public List<GameObject> na_bare_11 = new List<GameObject>();
     public List<GameObject> na_bare_12 = new List<GameObject>();
+   */
 
+    //
+
+    public List<Image> _form = new List<Image>();
+    public List<Color> _color = new List<Color>();
+    //                                                                                                 public List<int> _sprite = new List<int>();
 
     // Start is called before the first frame update
     void Start()
@@ -48,17 +54,28 @@ public class Spawner : MonoBehaviour
     {
         yield return new WaitForSeconds(0.1f);
 
+        /*
         if (_chosen == GOArray.Length - 1)
         { _chosen = 0; }
         else
         { _chosen = _chosen + 1; }
 
         copied_obj = GOArray[_chosen];
-               
-        GameObject inst_cont = Instantiate(copied_obj, spawner_1.transform); // spawning
+        */
+        
+
+        GameObject inst_cont = Instantiate(copied_obj, spawner_1.transform); // spawning bazovy
+        for (int i = 0; i < _color.Count; i++)
+        {
+
+
+        }
+
         inst_cont.transform.SetParent(gameObject.transform, true);
         na_urovne.Add(inst_cont);
 
+
+        /*
         if (_quantity < 36) //mashtabirovanie
         {
             StartCoroutine(cust_coroutine());
@@ -68,7 +85,8 @@ public class Spawner : MonoBehaviour
         {
             _chosen = -1;
             zap = true;        
-        }              
+        }      
+        */
     }
 
     public void _button()
@@ -87,7 +105,5 @@ public class Spawner : MonoBehaviour
         if (_chosen < na_urovne.Count)
         { StartCoroutine(cust_coroutine2()); }
     }
-
-
 
 }

@@ -5,8 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class Scene_Manager_scr : MonoBehaviour
 {
-    
-
     public void _CoolScene()
     { SceneManager.LoadScene(2); }
 

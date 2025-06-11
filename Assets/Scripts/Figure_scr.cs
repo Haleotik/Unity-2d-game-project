@@ -29,7 +29,7 @@ public class Figure_scr : MonoBehaviour, IPointerClickHandler
         transform.Rotate(0.0f, 0.0f, rand_rot, Space.Self);
         
         
-        
+        /*
         //mashtabirovanie
         if (_vid == 1)
         { _spisok = GameObject.Find("Canvas").GetComponent<Spawner>().na_bare_1; }
@@ -56,7 +56,7 @@ public class Figure_scr : MonoBehaviour, IPointerClickHandler
         else if (_vid == 12)
         { _spisok = GameObject.Find("Canvas").GetComponent<Spawner>().na_bare_12; }
 
-
+        */
     }
 
     // Update is called once per frame
@@ -87,11 +87,14 @@ public class Figure_scr : MonoBehaviour, IPointerClickHandler
                         _zapolnennost += 1;
                     }                    
                 }
+
                 if (_zapolnennost == 7) // mashtabirovanie
                 { GameObject.Find("Button").GetComponent<Scene_Manager_scr>()._FinishScene(); } 
 
                 if (_spisok.Count == 3) // ubiranie obectov 
                 { StartCoroutine(cust_coroutine3()); }
+
+
 
                 break;
             }            
