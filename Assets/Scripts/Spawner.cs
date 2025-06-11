@@ -27,9 +27,15 @@ public class Spawner : MonoBehaviour
     public List<GameObject> na_bare_2 = new List<GameObject>();
     public List<GameObject> na_bare_3 = new List<GameObject>();
     public List<GameObject> na_bare_4 = new List<GameObject>();
-    
+    public List<GameObject> na_bare_5 = new List<GameObject>();
+    public List<GameObject> na_bare_6 = new List<GameObject>();
+    public List<GameObject> na_bare_7 = new List<GameObject>();
+    public List<GameObject> na_bare_8 = new List<GameObject>();
+    public List<GameObject> na_bare_9 = new List<GameObject>();
+    public List<GameObject> na_bare_10 = new List<GameObject>();
+    public List<GameObject> na_bare_11 = new List<GameObject>();
+    public List<GameObject> na_bare_12 = new List<GameObject>();
 
-    
 
     // Start is called before the first frame update
     void Start()
@@ -53,7 +59,7 @@ public class Spawner : MonoBehaviour
         inst_cont.transform.SetParent(gameObject.transform, true);
         na_urovne.Add(inst_cont);
 
-        if (_quantity < 12) //mashtabirovanie
+        if (_quantity < 36) //mashtabirovanie
         {
             StartCoroutine(cust_coroutine());
             _quantity += 1;
@@ -73,7 +79,7 @@ public class Spawner : MonoBehaviour
 
     IEnumerator cust_coroutine2()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.01f);
 
         _chosen = _chosen + 1; 
         na_urovne[_chosen].transform.position = spawner_1.transform.position;
@@ -82,10 +88,6 @@ public class Spawner : MonoBehaviour
         { StartCoroutine(cust_coroutine2()); }
     }
 
-    public void _FinishScene()
-    { SceneManager.LoadScene(2, LoadSceneMode.Single); }
 
-    public void _CoolScene()
-    { SceneManager.LoadScene(3); }
 
 }

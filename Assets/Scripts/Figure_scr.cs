@@ -38,12 +38,30 @@ public class Figure_scr : MonoBehaviour, IPointerClickHandler
         else if (_vid == 3)
         { _spisok = GameObject.Find("Canvas").GetComponent<Spawner>().na_bare_3; }
         else if (_vid == 4)
-        { _spisok = GameObject.Find("Canvas").GetComponent<Spawner>().na_bare_4  ; }
+        { _spisok = GameObject.Find("Canvas").GetComponent<Spawner>().na_bare_4; }
+        else if (_vid == 5)
+        { _spisok = GameObject.Find("Canvas").GetComponent<Spawner>().na_bare_5; }
+        else if (_vid == 6)
+        { _spisok = GameObject.Find("Canvas").GetComponent<Spawner>().na_bare_6; }
+        else if (_vid == 7)
+        { _spisok = GameObject.Find("Canvas").GetComponent<Spawner>().na_bare_7; }
+        else if (_vid == 8)
+        { _spisok = GameObject.Find("Canvas").GetComponent<Spawner>().na_bare_8; }
+        else if (_vid == 9)
+        { _spisok = GameObject.Find("Canvas").GetComponent<Spawner>().na_bare_9; }
+        else if (_vid == 10)
+        { _spisok = GameObject.Find("Canvas").GetComponent<Spawner>().na_bare_10; }
+        else if (_vid == 11)
+        { _spisok = GameObject.Find("Canvas").GetComponent<Spawner>().na_bare_11; }
+        else if (_vid == 12)
+        { _spisok = GameObject.Find("Canvas").GetComponent<Spawner>().na_bare_12; }
 
-        
+
     }
 
     // Update is called once per frame
+
+
     
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -57,7 +75,7 @@ public class Figure_scr : MonoBehaviour, IPointerClickHandler
                 GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
                 
                 
-                _slots[i].GetComponent<Slot_scr>()._var = _vid; // slot zanyat 
+                _slots[i].GetComponent<Slot_scr>()._var = _vid; // slot pomechaetsya kak zanyaty 
                 GameObject.Find("Canvas").GetComponent<Spawner>().na_urovne.Remove(gameObject); 
                 _spisok.Add(gameObject); 
                 
@@ -70,32 +88,33 @@ public class Figure_scr : MonoBehaviour, IPointerClickHandler
                     }                    
                 }
                 if (_zapolnennost == 7) // mashtabirovanie
-                { GameObject.Find("Canvas").GetComponent<Spawner>()._FinishScene(); }
+                { GameObject.Find("Button").GetComponent<Scene_Manager_scr>()._FinishScene(); } 
 
                 if (_spisok.Count == 3) // ubiranie obectov 
-                {
-                    if (GameObject.Find("Canvas").GetComponent<Spawner>().na_urovne.Count() == 0)
-                    { GameObject.Find("Canvas").GetComponent<Spawner>()._CoolScene(); }
-                    else
-                    {
-                        for (int ib = 0; ib < 3; ib++)
-                        { Destroy(_spisok[ib]); }
-                        _spisok.Clear();
-
-                        for (int ibc = 0; ibc < _slots.Length; ibc++) // ochist slotov
-                        {
-                            if (_slots[ibc].GetComponent<Slot_scr>()._var == _vid)
-                            { _slots[ibc].GetComponent<Slot_scr>()._var = 0; }
-                        }
-                    }
-                    
-                }
+                { StartCoroutine(cust_coroutine3()); }
 
                 break;
             }            
         }        
     }
 
+    IEnumerator cust_coroutine3()
+    {
+        yield return new WaitForSeconds(0.5f);
+        if (GameObject.Find("Canvas").GetComponent<Spawner>().na_urovne.Count() == 0)
+        { GameObject.Find("Button").GetComponent<Scene_Manager_scr>()._CoolScene(); }
+        else
+        {
+            for (int ib = 0; ib < 3; ib++)
+            { Destroy(_spisok[ib]); }
+            _spisok.Clear();
 
+            for (int ibc = 0; ibc < _slots.Length; ibc++) // ochist slotov
+            {
+                if (_slots[ibc].GetComponent<Slot_scr>()._var == _vid)
+                { _slots[ibc].GetComponent<Slot_scr>()._var = 0; }
+            }
+        }
+    }
 
 }

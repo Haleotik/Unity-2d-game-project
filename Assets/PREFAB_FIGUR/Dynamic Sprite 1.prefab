@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 5249923666902452693}
   - component: {fileID: 7122907558633156743}
   - component: {fileID: 234290693173543480}
-  - component: {fileID: 5392534303194663523}
+  - component: {fileID: 95622992951587732}
   m_Layer: 5
   m_Name: Dynamic Sprite 1
   m_TagString: chast
@@ -199,8 +199,8 @@ MonoBehaviour:
   _var2: 0
   _zapolnennost: 0
   _spisok: []
---- !u!68 &5392534303194663523
-EdgeCollider2D:
+--- !u!58 &95622992951587732
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -232,13 +232,5 @@ EdgeCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_EdgeRadius: 0.67
-  m_Points:
-  - {x: 0.0021187663, y: 0.49542382}
-  - {x: -0.4888572, y: -0.39500013}
-  - {x: 0.4455382, y: -0.38977337}
-  - {x: 0.0038366076, y: 0.49964064}
-  m_AdjacentStartPoint: {x: 0, y: 0}
-  m_AdjacentEndPoint: {x: 0, y: 0}
-  m_UseAdjacentStartPoint: 0
-  m_UseAdjacentEndPoint: 0
+  serializedVersion: 2
+  m_Radius: 0.5
