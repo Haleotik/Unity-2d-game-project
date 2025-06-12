@@ -13,10 +13,12 @@ public class Figure_scr : MonoBehaviour, IPointerClickHandler
     public int _vid;
     public int _var2;
     public int _zapolnennost;
+    public int _zapolnennost2;
+
     public List<GameObject> _spisok;
-    
-    
-    
+    public List<GameObject> _spisok2;
+
+
     float rand_rot = 0f;
 
     
@@ -25,6 +27,9 @@ public class Figure_scr : MonoBehaviour, IPointerClickHandler
     void Start()
     {
         _slots = GameObject.FindGameObjectsWithTag("_slot").OrderBy(go => go.name).ToArray();
+        _spisok = GameObject.Find("Canvas").GetComponent<Spawner>()._spisok;
+        _spisok2 = GameObject.Find("Canvas").GetComponent<Spawner>()._spisok2;
+
         rand_rot = Random.Range(10f, 270f);
         transform.Rotate(0.0f, 0.0f, rand_rot, Space.Self);
         
@@ -71,13 +76,13 @@ public class Figure_scr : MonoBehaviour, IPointerClickHandler
             {
                 transform.position = _slots[i].transform.position;
                 transform.rotation = _slots[i].transform.rotation;
-                _var1 = true;
+                //_var1 = true;
                 GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
-                
-                
+                                
                 _slots[i].GetComponent<Slot_scr>()._var = _vid; // slot pomechaetsya kak zanyaty 
                 GameObject.Find("Canvas").GetComponent<Spawner>().na_urovne.Remove(gameObject); 
                 _spisok.Add(gameObject); 
+                      
                 
                 
                 for (int ib = 0; ib < _slots.Length; ib++) //proverka zapolnennost
@@ -89,11 +94,24 @@ public class Figure_scr : MonoBehaviour, IPointerClickHandler
                 }
 
                 if (_zapolnennost == 7) // mashtabirovanie
-                { GameObject.Find("Button").GetComponent<Scene_Manager_scr>()._FinishScene(); } 
+                { GameObject.Find("Button").GetComponent<Scene_Manager_scr>()._FinishScene(); }
 
-                if (_spisok.Count == 3) // ubiranie obectov 
+
+
+                for (int ib = 0; ib < _slots.Length; ib++)
+                {
+                    if (_spisok[ib].GetComponent<Figure_scr>()._vid == _vid)
+                    {
+                        Debug.Log(_vid);
+                        //Debug.Log(_spisok[ib].GetComponent<Slot_scr>()._var);
+                        _spisok2.Add(_spisok[ib]);
+                    }
+                }
+
+                if (_spisok2.Count == 3) // ubiranie obectov 
                 { StartCoroutine(cust_coroutine3()); }
-
+                else { _spisok2.Clear(); }
+                
 
 
                 break;
@@ -109,8 +127,8 @@ public class Figure_scr : MonoBehaviour, IPointerClickHandler
         else
         {
             for (int ib = 0; ib < 3; ib++)
-            { Destroy(_spisok[ib]); }
-            _spisok.Clear();
+            { Destroy(_spisok2[ib]); }
+            _spisok2.Clear();
 
             for (int ibc = 0; ibc < _slots.Length; ibc++) // ochist slotov
             {

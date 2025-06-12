@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 
 public class Spawner : MonoBehaviour
@@ -12,11 +13,22 @@ public class Spawner : MonoBehaviour
     
     public GameObject copied_obj;
 
-    public GameObject[] GOArray;
+    //public GameObject[] GOArray;
     public int _chosen;
     public int _quantity = 1;
     public bool zap = false;
     public string _name;
+    public int vid;
+
+    float time;
+
+    public Color[] _color;
+    public GameObject[] _form;
+    public Sprite[] _sprite;
+
+
+    public List<GameObject> _spisok;
+    public List<GameObject> _spisok2;
 
 
     public List<GameObject> na_urovne = new List<GameObject>();
@@ -39,14 +51,15 @@ public class Spawner : MonoBehaviour
 
     //
 
-    public List<Image> _form = new List<Image>();
-    public List<Color> _color = new List<Color>();
+    //public List<Image> _form = new List<Image>();
+    
     //                                                                                                 public List<int> _sprite = new List<int>();
 
     // Start is called before the first frame update
     void Start()
     {       
         StartCoroutine(cust_coroutine()); 
+        time = Time.deltaTime;
     }
     
 
@@ -62,17 +75,39 @@ public class Spawner : MonoBehaviour
 
         copied_obj = GOArray[_chosen];
         */
+
+
         
-
-        GameObject inst_cont = Instantiate(copied_obj, spawner_1.transform); // spawning bazovy
-        for (int i = 0; i < _color.Count; i++)
+        for (int i = 0; i < _form.Length; i++) // gameobject
         {
+            for (int ib = 0; ib < _color.Length; ib++)
+            {
+                for (int ibc = 0; ibc < _sprite.Length; ibc++)
+                {
+                    vid = vid + 1;
+                    for (int exemplar = 0; exemplar < 3; exemplar++)
+                    {
+                        GameObject inst_cont = Instantiate(_form[i], spawner_1.transform); // spawning bazovy
+                        inst_cont.SetActive(true);
+                        inst_cont.transform.SetParent(gameObject.transform, true);
+                        na_urovne.Add(inst_cont);
 
+                        inst_cont.GetComponent<Image>().color = _color[ib];
+
+                        
+                        inst_cont.GetComponent<Figure_scr>()._vid = vid;
+
+                        inst_cont.transform.Find("Img_animal").GetComponent<Image>().sprite = _sprite[ibc];
+                        inst_cont.transform.Find("Img_animal").gameObject.SetActive(true);
+                    }
+                }
+
+            }
 
         }
+        
 
-        inst_cont.transform.SetParent(gameObject.transform, true);
-        na_urovne.Add(inst_cont);
+        
 
 
         /*
