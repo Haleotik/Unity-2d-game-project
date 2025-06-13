@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Linq;
+using UnityEngine.SocialPlatforms;
 
 
 public class Figure_scr : MonoBehaviour, IPointerClickHandler
@@ -12,13 +13,21 @@ public class Figure_scr : MonoBehaviour, IPointerClickHandler
     public int _vid;
     public int _zapolnennost;
     
+    //Vector2 gr;
+    
     public List<GameObject> _spisok; // kto v slote
     public List<GameObject> _spisok2; // sovpadaushii
+
+    public Vector2 vecc;
+    public Vector2 vecc2;
+    public bool _gr;
 
     float rand_rot = 0f;
 
     void Start()
     {
+
+        //gr = Vector2.right;
         _slots = GameObject.FindGameObjectsWithTag("_slot").OrderBy(go => go.name).ToArray();
         _spisok = GameObject.Find("Canvas").GetComponent<Spawner>()._spisok;
         _spisok2 = GameObject.Find("Canvas").GetComponent<Spawner>()._spisok2;
@@ -28,8 +37,21 @@ public class Figure_scr : MonoBehaviour, IPointerClickHandler
 
     }
         
-        
-        
+    void Update()
+    {
+        if (_gr)
+        {
+            /*
+            vecc = GameObject.Find("Circle").transform.position - gameObject.transform.position;
+            vecc2 = vecc.normalized;
+            GetComponent<ConstantForce2D>().force = vecc2*10;
+            */
+            //Debug.DrawRay(transform.position, newDirection, Color.red);
+        }
+                        
+    }
+
+
     public void OnPointerClick(PointerEventData eventData)
     {
         for (int i = 0; i < _slots.Length; i++)
@@ -95,5 +117,35 @@ public class Figure_scr : MonoBehaviour, IPointerClickHandler
             }
         }
     }
+
+    
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("_prityaj"))
+        {
+            _gr = true;
+            //GetComponent<ConstantForce2D>().force = vecc;
+        }    
+    }
+
+    void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("_prityaj"))
+        {
+            _gr = false;
+        }
+    }
+
+
+
+        //Destroy(gameObject);
+    /*
+    if (collision.gameObject.CompareTag("_prityaj"))
+    {
+        //Destroy(gameObject);
+        GetComponent<ConstantForce2D>().relativeForce = collision.collider.transform.position*-50;
+    } 
+    */
+
 
 }
