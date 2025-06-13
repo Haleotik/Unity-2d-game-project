@@ -9,21 +9,14 @@ using System.Linq;
 public class Figure_scr : MonoBehaviour, IPointerClickHandler
 {
     public GameObject[] _slots;
-    public bool _var1;
     public int _vid;
-    public int _var2;
     public int _zapolnennost;
-    public int _zapolnennost2;
-
-    public List<GameObject> _spisok;
-    public List<GameObject> _spisok2;
-
+    
+    public List<GameObject> _spisok; // kto v slote
+    public List<GameObject> _spisok2; // sovpadaushii
 
     float rand_rot = 0f;
 
-    
-
-    // Start is called before the first frame update
     void Start()
     {
         _slots = GameObject.FindGameObjectsWithTag("_slot").OrderBy(go => go.name).ToArray();
@@ -32,51 +25,22 @@ public class Figure_scr : MonoBehaviour, IPointerClickHandler
 
         rand_rot = Random.Range(10f, 270f);
         transform.Rotate(0.0f, 0.0f, rand_rot, Space.Self);
-        
-        
-        /*
-        //mashtabirovanie
-        if (_vid == 1)
-        { _spisok = GameObject.Find("Canvas").GetComponent<Spawner>().na_bare_1; }
-        else if (_vid == 2)
-        { _spisok = GameObject.Find("Canvas").GetComponent<Spawner>().na_bare_2; }
-        else if (_vid == 3)
-        { _spisok = GameObject.Find("Canvas").GetComponent<Spawner>().na_bare_3; }
-        else if (_vid == 4)
-        { _spisok = GameObject.Find("Canvas").GetComponent<Spawner>().na_bare_4; }
-        else if (_vid == 5)
-        { _spisok = GameObject.Find("Canvas").GetComponent<Spawner>().na_bare_5; }
-        else if (_vid == 6)
-        { _spisok = GameObject.Find("Canvas").GetComponent<Spawner>().na_bare_6; }
-        else if (_vid == 7)
-        { _spisok = GameObject.Find("Canvas").GetComponent<Spawner>().na_bare_7; }
-        else if (_vid == 8)
-        { _spisok = GameObject.Find("Canvas").GetComponent<Spawner>().na_bare_8; }
-        else if (_vid == 9)
-        { _spisok = GameObject.Find("Canvas").GetComponent<Spawner>().na_bare_9; }
-        else if (_vid == 10)
-        { _spisok = GameObject.Find("Canvas").GetComponent<Spawner>().na_bare_10; }
-        else if (_vid == 11)
-        { _spisok = GameObject.Find("Canvas").GetComponent<Spawner>().na_bare_11; }
-        else if (_vid == 12)
-        { _spisok = GameObject.Find("Canvas").GetComponent<Spawner>().na_bare_12; }
 
-        */
     }
-
-    // Update is called once per frame
-
-
-    
+        
+        
+        
     public void OnPointerClick(PointerEventData eventData)
     {
         for (int i = 0; i < _slots.Length; i++)
         {
             if (_slots[i].GetComponent<Slot_scr>()._var == 0) // ne zanyat
             {
+                _spisok.RemoveAll(s => s == null);
+                _spisok2.Clear();
+                
                 transform.position = _slots[i].transform.position;
                 transform.rotation = _slots[i].transform.rotation;
-                //_var1 = true;
                 GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
                                 
                 _slots[i].GetComponent<Slot_scr>()._var = _vid; // slot pomechaetsya kak zanyaty 
@@ -97,23 +61,16 @@ public class Figure_scr : MonoBehaviour, IPointerClickHandler
                 { GameObject.Find("Button").GetComponent<Scene_Manager_scr>()._FinishScene(); }
 
 
-
                 for (int ib = 0; ib < _slots.Length; ib++)
                 {
-                    if (_spisok[ib].GetComponent<Figure_scr>()._vid == _vid)
-                    {
-                        Debug.Log(_vid);
-                        //Debug.Log(_spisok[ib].GetComponent<Slot_scr>()._var);
+                    if (_spisok[ib].GetComponent<Figure_scr>()._vid == this._vid)
+                    {   
                         _spisok2.Add(_spisok[ib]);
+                        if (_spisok2.Count == 3) // ubiranie obectov 
+                        { StartCoroutine(cust_coroutine3()); }
                     }
                 }
-
-                if (_spisok2.Count == 3) // ubiranie obectov 
-                { StartCoroutine(cust_coroutine3()); }
-                else { _spisok2.Clear(); }
                 
-
-
                 break;
             }            
         }        
@@ -127,8 +84,9 @@ public class Figure_scr : MonoBehaviour, IPointerClickHandler
         else
         {
             for (int ib = 0; ib < 3; ib++)
-            { Destroy(_spisok2[ib]); }
-            _spisok2.Clear();
+            {
+                Destroy(_spisok2[ib]);
+            }
 
             for (int ibc = 0; ibc < _slots.Length; ibc++) // ochist slotov
             {
