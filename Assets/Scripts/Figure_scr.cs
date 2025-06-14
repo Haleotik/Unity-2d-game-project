@@ -21,6 +21,11 @@ public class Figure_scr : MonoBehaviour, IPointerClickHandler
     public Vector2 vecc;
     public Vector2 vecc2;
     public bool _gr;
+    public bool _grReactNOT;
+    public bool spec_opt_expl;
+
+    public bool slotted;
+
 
     float rand_rot = 0f;
 
@@ -39,68 +44,99 @@ public class Figure_scr : MonoBehaviour, IPointerClickHandler
         
     void Update()
     {
-        if (_gr)
+        if (_gr && !_grReactNOT)
         {
-            /*
             vecc = GameObject.Find("Circle").transform.position - gameObject.transform.position;
             vecc2 = vecc.normalized;
-            GetComponent<ConstantForce2D>().force = vecc2*10;
-            */
-            //Debug.DrawRay(transform.position, newDirection, Color.red);
+            
+            GetComponent<ConstantForce2D>().force = vecc2*7;
         }
-                        
+        
+        else if (vecc2 != null && !_gr) 
+        {
+            GetComponent<ConstantForce2D>().force = vecc2;
+            vecc2 = Vector2.zero;
+        }
+        
+
+        Debug.DrawRay(transform.position, vecc2 * 7, Color.red);
     }
 
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        for (int i = 0; i < _slots.Length; i++)
+        if (!slotted)
         {
-            if (_slots[i].GetComponent<Slot_scr>()._var == 0) // ne zanyat
+            slotted = true;
+            for (int i = 0; i < _slots.Length; i++)
             {
-                _spisok.RemoveAll(s => s == null);
-                _spisok2.Clear();
-                
-                transform.position = _slots[i].transform.position;
-                transform.rotation = _slots[i].transform.rotation;
-                GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
-                                
-                _slots[i].GetComponent<Slot_scr>()._var = _vid; // slot pomechaetsya kak zanyaty 
-                GameObject.Find("Canvas").GetComponent<Spawner>().na_urovne.Remove(gameObject); 
-                _spisok.Add(gameObject); 
-                      
-                
-                
-                for (int ib = 0; ib < _slots.Length; ib++) //proverka zapolnennost
+                if (_slots[i].GetComponent<Slot_scr>()._var == 0) // ne zanyat
                 {
-                    if (_slots[ib].GetComponent<Slot_scr>()._var != 0)
+                    _spisok.RemoveAll(s => s == null);
+                    _spisok2.Clear();
+
+                    transform.position = _slots[i].transform.position;
+                    transform.rotation = _slots[i].transform.rotation;
+                    GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+
+                    _slots[i].GetComponent<Slot_scr>()._var = _vid; // slot pomechaetsya kak zanyaty 
+                    GameObject.Find("Canvas").GetComponent<Spawner>().na_urovne.Remove(gameObject);
+                    _spisok.Add(gameObject);
+
+
+
+                    for (int ib = 0; ib < _slots.Length; ib++) //proverka zapolnennost
                     {
-                        _zapolnennost += 1;
-                    }                    
-                }
-
-                if (_zapolnennost == 7) // mashtabirovanie
-                { GameObject.Find("Button").GetComponent<Scene_Manager_scr>()._FinishScene(); }
-
-
-                for (int ib = 0; ib < _slots.Length; ib++)
-                {
-                    if (_spisok[ib].GetComponent<Figure_scr>()._vid == this._vid)
-                    {   
-                        _spisok2.Add(_spisok[ib]);
-                        if (_spisok2.Count == 3) // ubiranie obectov 
-                        { StartCoroutine(cust_coroutine3()); }
+                        if (_slots[ib].GetComponent<Slot_scr>()._var != 0)
+                        {
+                            _zapolnennost += 1;
+                        }
                     }
+
+                    if (_zapolnennost == 7) // mashtabirovanie
+                    { GameObject.Find("Button").GetComponent<Scene_Manager_scr>()._FinishScene(); }
+
+
+                    for (int ib = 0; ib < _slots.Length; ib++) // poisk pohoj figurok
+                    {
+                        if (_spisok[ib].GetComponent<Figure_scr>()._vid == this._vid)
+                        {
+
+                            _spisok2.Add(_spisok[ib]);
+                            
+                            
+                            
+                            if (!spec_opt_expl)
+                            {
+                                if (_spisok2.Count == 3) // ubiranie obectov 
+                                { StartCoroutine(cust_coroutine3()); }
+                            }
+                            else
+                            {
+
+                                //Debug.Log("ererereee");
+                                if (ib == _slots.Length && _spisok2.Count != 0)
+                                {
+                                    Debug.Log("ererereee");
+                                    StartCoroutine(cust_coroutine3());
+                                }
+                            }
+                            
+                            
+                        }
+                    }
+
+                    break;
                 }
+            }
+        }
                 
-                break;
-            }            
-        }        
     }
 
     IEnumerator cust_coroutine3()
     {
         yield return new WaitForSeconds(0.5f);
+        Debug.Log("cust_coroutine3()");
         if (GameObject.Find("Canvas").GetComponent<Spawner>().na_urovne.Count() == 0)
         { GameObject.Find("Button").GetComponent<Scene_Manager_scr>()._CoolScene(); }
         else
@@ -108,6 +144,7 @@ public class Figure_scr : MonoBehaviour, IPointerClickHandler
             for (int ib = 0; ib < 3; ib++)
             {
                 Destroy(_spisok2[ib]);
+                //Debug.Log("cust_coroutine3()");
             }
 
             for (int ibc = 0; ibc < _slots.Length; ibc++) // ochist slotov
@@ -121,6 +158,7 @@ public class Figure_scr : MonoBehaviour, IPointerClickHandler
     
     void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log(collision.gameObject);
         if (collision.gameObject.CompareTag("_prityaj"))
         {
             _gr = true;

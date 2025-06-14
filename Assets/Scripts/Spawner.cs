@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,8 +20,12 @@ public class Spawner : MonoBehaviour
     public List<GameObject> _spisok;
     public List<GameObject> _spisok2;
 
-    public int _tyaj = 5;
-    public int _prityaj = 20;
+    public int Spec_opt;
+    public int _rand;
+
+    //public int _tyaj = 5;
+    //public int _prityaj = 20;
+    public GameObject _circle;
 
     //Vector2 gr_position;
 
@@ -28,7 +33,7 @@ public class Spawner : MonoBehaviour
 
     void Start()
     {
-        _button();
+        
         for (int i = 0; i < _form.Length; i++) // gameobject
         {
             for (int ib = 0; ib < _color.Length; ib++)
@@ -53,19 +58,33 @@ public class Spawner : MonoBehaviour
                 }
             }
         }
+        _button();
     }
     
 
     public void _button()
     {
         
-        for (int i = 0; i < na_urovne.Count; i++)
+        for (int i = 0; i < na_urovne.Count; i++) // obnulyator
         {
             na_urovne[i].SetActive(false);
             na_urovne[i].GetComponent<Rigidbody2D>().gravityScale = 1;
+            na_urovne[i].GetComponent<Figure_scr>()._grReactNOT = false;
+            na_urovne[i].GetComponent<Figure_scr>().spec_opt_expl = false;
         }
-        
-        
+
+
+        _circle.SetActive(false);
+
+        Spec_opt = 3;
+        _rand = Random.Range(1, na_urovne.Count);
+        /*
+        if (Spec_opt == 4)
+        { Spec_opt = -1; }
+        else
+        { Spec_opt = Spec_opt + 1; }
+        */
+
         _chosen = 0;
         StartCoroutine(cust_coroutine2());
        
@@ -73,22 +92,32 @@ public class Spawner : MonoBehaviour
 
     IEnumerator cust_coroutine2()
     {
-        yield return new WaitForSeconds(0.01f);
+        yield return new WaitForSeconds(0.02f);
 
         na_urovne[_chosen].transform.position = spawner_1.transform.position;
         na_urovne[_chosen].SetActive(true);
-        if (_chosen == _tyaj)
+        if (Spec_opt == 1) // _tyaj
         {
-            na_urovne[_tyaj].GetComponent<Rigidbody2D>().gravityScale = 50;
+            na_urovne[_rand].GetComponent<Rigidbody2D>().gravityScale = 100;
         }
 
-        
-        if (_chosen == _prityaj)
+
+        else if (Spec_opt == 2) // _prityaj
         {
-            
-           // na_urovne[_prityaj].tag = "_prityaj";
+            _circle.transform.position = na_urovne[_rand].transform.position;
+            _circle.transform.SetParent(na_urovne[_rand].transform);
+            na_urovne[_rand].GetComponent<Figure_scr>()._grReactNOT = true;
+            na_urovne[_rand].GetComponent<Rigidbody2D>().gravityScale = 2f;
+            _circle.SetActive(true);
         }
-        
+
+
+        else if (Spec_opt == 3) // _prityaj
+        {
+            na_urovne[_rand].GetComponent<Figure_scr>().spec_opt_expl = true;
+            na_urovne[_rand].AddComponent<ParticleSystem>();
+        }
+
 
         if (_chosen < na_urovne.Count)
         { 
