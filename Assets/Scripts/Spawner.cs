@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+
 
 
 
@@ -23,11 +25,12 @@ public class Spawner : MonoBehaviour
     public int Spec_opt;
     public int _rand;
 
-    //public int _tyaj = 5;
-    //public int _prityaj = 20;
+    public TMP_Text _textMeshPro;
+
+    
     public GameObject _circle;
 
-    //Vector2 gr_position;
+    
 
     public List<GameObject> na_urovne = new List<GameObject>();
 
@@ -61,30 +64,35 @@ public class Spawner : MonoBehaviour
         _button();
     }
     
-
-    public void _button()
+    public void spec()
     {
         
-        for (int i = 0; i < na_urovne.Count; i++) // obnulyator
-        {
-            na_urovne[i].SetActive(false);
-            na_urovne[i].GetComponent<Rigidbody2D>().gravityScale = 1;
-            na_urovne[i].GetComponent<Figure_scr>()._grReactNOT = false;
-            na_urovne[i].GetComponent<Figure_scr>().spec_opt_expl = false;
-        }
-
-
-        _circle.SetActive(false);
-
-        Spec_opt = 3;
-        _rand = Random.Range(1, na_urovne.Count);
-        /*
         if (Spec_opt == 4)
         { Spec_opt = -1; }
         else
         { Spec_opt = Spec_opt + 1; }
-        */
+        _textMeshPro = Spec_opt(ToString);
 
+    }
+
+    public void _button()
+    {
+        _rand = Random.Range(1, na_urovne.Count);
+        for (int i = 0; i < na_urovne.Count; i++) // obnulyator
+        {
+            na_urovne[i].SetActive(false);
+            na_urovne[_rand].GetComponent<Rigidbody2D>().gravityScale = 1;
+            
+            na_urovne[_rand].GetComponent<Figure_scr>().Spec_opt_f = 0;
+            na_urovne[_rand].GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+
+        }
+
+        
+
+        //Spec_opt = 2;
+        
+        
         _chosen = 0;
         StartCoroutine(cust_coroutine2());
        
@@ -96,33 +104,46 @@ public class Spawner : MonoBehaviour
 
         na_urovne[_chosen].transform.position = spawner_1.transform.position;
         na_urovne[_chosen].SetActive(true);
-        if (Spec_opt == 1) // _tyaj
-        {
-            na_urovne[_rand].GetComponent<Rigidbody2D>().gravityScale = 100;
-        }
-
-
-        else if (Spec_opt == 2) // _prityaj
-        {
-            _circle.transform.position = na_urovne[_rand].transform.position;
-            _circle.transform.SetParent(na_urovne[_rand].transform);
-            na_urovne[_rand].GetComponent<Figure_scr>()._grReactNOT = true;
-            na_urovne[_rand].GetComponent<Rigidbody2D>().gravityScale = 2f;
-            _circle.SetActive(true);
-        }
-
-
-        else if (Spec_opt == 3) // _prityaj
-        {
-            na_urovne[_rand].GetComponent<Figure_scr>().spec_opt_expl = true;
-            na_urovne[_rand].AddComponent<ParticleSystem>();
-        }
-
-
-        if (_chosen < na_urovne.Count)
+        
+        if (_chosen < na_urovne.Count-1)
         { 
             _chosen = _chosen + 1;
             StartCoroutine(cust_coroutine2()); 
+        }
+
+        else
+        {
+            if (Spec_opt == 1) // _tyaj
+            {
+                na_urovne[_rand].GetComponent<Rigidbody2D>().gravityScale = 100;
+            }
+
+
+            else if (Spec_opt == 2) // _prityaj
+            {
+                _circle.transform.position = na_urovne[_rand].transform.position;
+                _circle.transform.SetParent(na_urovne[_rand].transform);
+
+                na_urovne[_rand].GetComponent<Figure_scr>().Spec_opt_f = 2;
+                na_urovne[_rand].GetComponent<Rigidbody2D>().gravityScale = 2f;
+                _circle.SetActive(true);
+            }
+
+
+            else if (Spec_opt == 3) // _expl
+            {
+                na_urovne[_rand].GetComponent<Figure_scr>().Spec_opt_f = 3;
+                na_urovne[_rand].AddComponent<ParticleSystem>();
+            }
+
+            else if (Spec_opt == 4 && na_urovne.Count > 15) // _hol
+            {
+                na_urovne[_rand].GetComponent<Figure_scr>().Spec_opt_f = 4;
+                
+                na_urovne[_rand].GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+            }
+
+
         }
     }
 
