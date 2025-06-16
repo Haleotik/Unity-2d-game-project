@@ -14,6 +14,7 @@ public class Spawner : MonoBehaviour
     
     public int _chosen;
     public int vid;
+    public int _zapolnennost;
 
     public Color[] _color;
     public GameObject[] _form;
@@ -22,21 +23,18 @@ public class Spawner : MonoBehaviour
     public List<GameObject> _spisok;
     public List<GameObject> _spisok2;
 
-    public int Spec_opt;
+    public int Spec_opt = 0;
     public int _rand;
-
     public TMP_Text _textMeshPro;
-
-    
     public GameObject _circle;
+    public List<GameObject> na_urovne;
+    public List<GameObject> na_urovne_got;
+    public GameObject SpecObj;
 
-    
-
-    public List<GameObject> na_urovne = new List<GameObject>();
+    public bool _clickable;
 
     void Start()
-    {
-        
+    {        
         for (int i = 0; i < _form.Length; i++) // gameobject
         {
             for (int ib = 0; ib < _color.Length; ib++)
@@ -62,16 +60,35 @@ public class Spawner : MonoBehaviour
             }
         }
         _button();
+        coroutineT();
+        
     }
+
     
+
+    public void spec3Pr()
+    {
+        Debug.Log("Just");
+        Debug.Log(_rand);
+        if (na_urovne_got.Count == 3) // _hol
+        {
+            Debug.Log("if");
+            Debug.Log(_rand);
+            
+            SpecObj.GetComponent<Figure_scr>().Spec_opt_f = 0;
+            SpecObj.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+            //Spec_opt = 0;
+        }
+    }
+
     public void spec()
     {
         
         if (Spec_opt == 4)
-        { Spec_opt = -1; }
+        { Spec_opt = 0; }
         else
         { Spec_opt = Spec_opt + 1; }
-        _textMeshPro = Spec_opt(ToString);
+        _textMeshPro.text = Spec_opt.ToString(); 
 
     }
 
@@ -81,18 +98,13 @@ public class Spawner : MonoBehaviour
         for (int i = 0; i < na_urovne.Count; i++) // obnulyator
         {
             na_urovne[i].SetActive(false);
-            na_urovne[_rand].GetComponent<Rigidbody2D>().gravityScale = 1;
+            na_urovne[i].GetComponent<Rigidbody2D>().gravityScale = 1;
             
-            na_urovne[_rand].GetComponent<Figure_scr>().Spec_opt_f = 0;
-            na_urovne[_rand].GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+            na_urovne[i].GetComponent<Figure_scr>().Spec_opt_f = 0;
+            na_urovne[i].GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
 
         }
 
-        
-
-        //Spec_opt = 2;
-        
-        
         _chosen = 0;
         StartCoroutine(cust_coroutine2());
        
@@ -136,16 +148,24 @@ public class Spawner : MonoBehaviour
                 na_urovne[_rand].AddComponent<ParticleSystem>();
             }
 
-            else if (Spec_opt == 4 && na_urovne.Count > 15) // _hol
+            else if (Spec_opt == 4 && na_urovne_got.Count <3) // _hol
             {
                 na_urovne[_rand].GetComponent<Figure_scr>().Spec_opt_f = 4;
-                
                 na_urovne[_rand].GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+                SpecObj = na_urovne[_rand];
             }
-
-
         }
     }
 
-    
+    public void coroutineT()
+    { 
+        StartCoroutine(cust_coroutineT());
+        _clickable = false;
+    }
+    IEnumerator cust_coroutineT()
+    {
+        yield return new WaitForSeconds(0.5f);
+        _clickable = true;
+    }
+
 }

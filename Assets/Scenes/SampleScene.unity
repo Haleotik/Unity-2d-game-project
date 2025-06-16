@@ -548,7 +548,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _slots: []
   _vid: 0
-  _zapolnennost: 0
   vecc: {x: 0, y: 0}
   vecc2: {x: 0, y: 0}
   _gr: 0
@@ -1319,7 +1318,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 772775343}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1051070915}
+        m_TargetAssemblyTypeName: Spawner, Assembly-CSharp
+        m_MethodName: spec
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &772775343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1879,6 +1890,7 @@ MonoBehaviour:
   spawner_1: {fileID: 1357391522}
   _chosen: 0
   vid: 0
+  _zapolnennost: 0
   _color:
   - {r: 1, g: 0, b: 0.8548732, a: 1}
   - {r: 0, g: 0.5794997, b: 1, a: 1}
@@ -1892,8 +1904,10 @@ MonoBehaviour:
   _spisok2: []
   Spec_opt: 0
   _rand: 0
+  _textMeshPro: {fileID: 1294418179}
   _circle: {fileID: 812435354}
   na_urovne: []
+  _clickable: 0
 --- !u!114 &1051070916
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2184,7 +2198,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _slots: []
   _vid: 0
-  _zapolnennost: 0
   vecc: {x: 0, y: 0}
   vecc2: {x: 0, y: 0}
   _gr: 0
@@ -2236,7 +2249,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -51.906, y: -97}
+  m_AnchoredPosition: {x: -51.906006, y: -97}
   m_SizeDelta: {x: 108.49, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1294418179

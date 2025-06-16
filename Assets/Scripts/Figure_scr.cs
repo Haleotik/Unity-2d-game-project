@@ -12,21 +12,16 @@ public class Figure_scr : MonoBehaviour, IPointerClickHandler
 {
     public GameObject[] _slots;
     public int _vid;
-    public int _zapolnennost;
+    
     
     
 
     public Vector2 vecc;
     public Vector2 vecc2;
     public bool _gr;
-    
     public int Spec_opt_f;
-
     Spawner Spawner_obj;
-
     public bool slotted;
-
-
     float rand_rot = 0f;
 
     void Start()
@@ -44,49 +39,50 @@ public class Figure_scr : MonoBehaviour, IPointerClickHandler
         
     void Update()
     {
-        if (_gr && Spec_opt_f != 2)
+        if (Spawner_obj.Spec_opt == 2)
         {
-            vecc = GameObject.Find("Circle").transform.position - gameObject.transform.position;
-            vecc2 = vecc.normalized;
-            
-            GetComponent<ConstantForce2D>().force = vecc2*7;
-        }
-        
-        else if (vecc2 != null && !_gr) 
-        {
-            GetComponent<ConstantForce2D>().force = vecc2;
-            vecc2 = Vector2.zero;
-        }
-        
+            if (_gr && Spec_opt_f != 2)
+            {
+                vecc = GameObject.Find("Circle").transform.position - gameObject.transform.position;
+                vecc2 = vecc.normalized;
 
-        Debug.DrawRay(transform.position, vecc2 * 7, Color.red);
+                GetComponent<ConstantForce2D>().force = vecc2 * 7;
+            }
+
+            else if (vecc2 != null && !_gr)
+            {
+                GetComponent<ConstantForce2D>().force = vecc2;
+                vecc2 = Vector2.zero;
+            }
+
+
+            Debug.DrawRay(transform.position, vecc2 * 7, Color.red);
+
+        }
+        
     }
 
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (!slotted && Spec_opt_f != 4)
+        if (!slotted && Spec_opt_f != 4 && Spawner_obj._clickable)
         {
             slotted = true;
+            Spawner_obj.coroutineT();
+            Spawner_obj._zapolnennost += 1;
             if (Spec_opt_f == 2 && transform.Find("Circle").gameObject != null)
             {
                 transform.Find("Circle").gameObject.SetActive(false);
                 transform.Find("Circle").SetParent(GameObject.Find("Panel").transform);
 
             }
+
             for (int i = 0; i < _slots.Length; i++)
             {
                 if (_slots[i].GetComponent<Slot_scr>()._var == 0) // ne zanyat
                 {
                     Spawner_obj._spisok.RemoveAll(s => s == null);
                     Spawner_obj._spisok2.Clear();
-
-                    if (Spawner_obj.na_urovne.Count < 15 && Spawner_obj.Spec_opt == 4)
-                    {
-                        Spawner_obj.Spec_opt = 0;
-                        Spec_opt_f = 0;
-                        Spawner_obj.na_urovne[Spawner_obj._rand].GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
-                    }
 
                     transform.position = _slots[i].transform.position;
                     transform.rotation = _slots[i].transform.rotation;
@@ -96,40 +92,35 @@ public class Figure_scr : MonoBehaviour, IPointerClickHandler
                     Spawner_obj.na_urovne.Remove(gameObject);
                     Spawner_obj._spisok.Add(gameObject);
 
-
-
-                    for (int ib = 0; ib < _slots.Length; ib++) //proverka zapolnennost
-                    {
-                        if (_slots[ib].GetComponent<Slot_scr>()._var != 0)
-                        {
-                            _zapolnennost += 1;
-                        }
-                    }
-
-                    if (_zapolnennost == 7) // mashtabirovanie
-                    { GameObject.Find("Button").GetComponent<Scene_Manager_scr>()._FinishScene(); }
-
-
                     for (int ib = 0; ib < _slots.Length; ib++) // poisk pohoj figurok
                     {
-                        if (Spawner_obj._spisok.Count > ib &&Spawner_obj._spisok[ib].GetComponent<Figure_scr>()._vid == this._vid)
+                        if (Spawner_obj._spisok.Count > ib && Spawner_obj._spisok[ib].GetComponent<Figure_scr>()._vid == this._vid)
                         {
                             Spawner_obj._spisok2.Add(Spawner_obj._spisok[ib]);
-                         
-                            if (Spec_opt_f != 3)
-                            {
-                                if (Spawner_obj._spisok2.Count == 3) // ubiranie obectov 
-                                { StartCoroutine(cust_coroutine3()); }
-                            }
-                            else
-                            {
-                                if (Spawner_obj._spisok2.Count > 1) // ubiranie obectov 
-                                { StartCoroutine(cust_coroutine3()); }
-                            }
                         }
-                        
                     }
+
+                    if (Spec_opt_f != 3)
+                    {
+                        if (Spawner_obj._spisok2.Count == 3) // ubiranie obectov 
+                        {
+                            StartCoroutine(cust_coroutine3());
+                        }
+                        else if (Spawner_obj._zapolnennost == 7)
+                        { GameObject.Find("Canvas").GetComponent<Scene_Manager_scr>()._FinishScene(); }
+                    }
+                    else
+                    {
+                        if (Spawner_obj._spisok2.Count > 1) // ubiranie obectov 
+                        {
+                            StartCoroutine(cust_coroutine3());
+                        }
+                        else if (Spawner_obj._zapolnennost == 7)
+                        { GameObject.Find("Canvas").GetComponent<Scene_Manager_scr>()._FinishScene(); }
+                    }
+
                     
+
 
                     break;
                 }
@@ -141,25 +132,31 @@ public class Figure_scr : MonoBehaviour, IPointerClickHandler
     IEnumerator cust_coroutine3()
     {
         yield return new WaitForSeconds(0.5f);
-        Debug.Log("cust_coroutine3()");
+        
+        
         if (Spawner_obj.na_urovne.Count() == 0)
-        { GameObject.Find("Button").GetComponent<Scene_Manager_scr>()._CoolScene(); }
+        { GameObject.Find("Canvas").GetComponent<Scene_Manager_scr>()._CoolScene(); }
         else
         {
-            for (int ib = 0; ib < 3; ib++)
+            for (int ib = 0; ib < 3; ib++) // ochist sovp object
             {
                 if (Spawner_obj._spisok2.Count > ib)
                 {
+                    Spawner_obj.na_urovne_got.Add(Spawner_obj._spisok2[ib]);
                     Destroy(Spawner_obj._spisok2[ib]);
+                    Spawner_obj._spisok2[ib].SetActive(false);
+                    Spawner_obj._zapolnennost -= 1;
+                    if (Spawner_obj.Spec_opt == 4) // _hol
+                    {
+                        Spawner_obj.spec3Pr();
+                    }
                 }
             }
 
             for (int ibc = 0; ibc < _slots.Length; ibc++) // ochist slotov
             {
-                Debug.Log("cust_coroutine3()");
                 if (_slots.Length > ibc  && _slots[ibc].GetComponent<Slot_scr>()._var == _vid)
                 {
-                    Debug.Log("ererereee");
                     _slots[ibc].GetComponent<Slot_scr>()._var = 0;
                 }
             }
